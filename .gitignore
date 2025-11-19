@@ -32,6 +32,8 @@ logs/
 # Database
 *.db
 *.sqlite
+*.sqlite3
+db.sqlite3
 
 # Uploads
 uploads/
@@ -45,3 +47,16 @@ coverage/
 .cache/
 .temp/
 tmp/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+env/
+ENV/
+staticfiles/
+*.egg-info/
+.pytest_cache/
