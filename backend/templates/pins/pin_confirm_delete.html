@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block title %}Удалить пин - Pinterest Clone{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="confirm-delete">
+        <h1>Удалить пин?</h1>
+        <div class="delete-preview">
+            <img src="{{ pin.image.url }}" alt="{{ pin.title }}">
+            <h3>{{ pin.title }}</h3>
+        </div>
+        <p>Это действие нельзя отменить. Вы уверены?</p>
+
+        <form method="post">
+            {% csrf_token %}
+            <div class="form-actions">
+                <button type="submit" class="btn btn-danger">Да, удалить</button>
+                <a href="{% url 'pin_detail' pin.pk %}" class="btn btn-secondary">Отмена</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

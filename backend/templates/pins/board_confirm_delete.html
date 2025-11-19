@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block title %}Удалить доску - Pinterest Clone{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="confirm-delete">
+        <h1>Удалить доску "{{ board.name }}"?</h1>
+        <p>Это действие нельзя отменить. Все пины останутся, но будут удалены из этой доски.</p>
+
+        <form method="post">
+            {% csrf_token %}
+            <div class="form-actions">
+                <button type="submit" class="btn btn-danger">Да, удалить</button>
+                <a href="{% url 'board_detail' board.slug %}" class="btn btn-secondary">Отмена</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

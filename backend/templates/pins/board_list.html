@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block title %}Доски - Pinterest Clone{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="page-header">
+        <h1>Публичные доски</h1>
+        {% if user.is_authenticated %}
+            <a href="{% url 'board_create' %}" class="btn btn-primary">Создать доску</a>
+        {% endif %}
+    </div>
+
+    {% if boards %}
+        <div class="boards-grid">
+            {% for board in boards %}
+                <div class="board-card">
+                    <a href="{% url 'board_detail' board.slug %}" class="board-link">
+                        <div class="board-cover">
+                            {% if board.pins.first %}
+                                <img src="{{ board.pins.first.image.url }}" alt="{{ board.name }}">
+                            {% else %}
+                                <div class="board-placeholder">
+                                    <svg width="64" height="64" viewBox="0 0 24 24" fill="currentColor" opacity="0.3">
+                                        <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V5h14v14z"/>
+                                    </svg>
+                                </div>
+                            {% endif %}
+                        </div>
+                        <div class="board-info">
+                            <h3>{{ board.name }}</h3>
+                            <p class="board-meta">
+                                {{ board.pins_count }} пинов • {{ board.user.username }}
+                            </p>
+                        </div>
+                    </a>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="empty-state">
+            <h2>Досок пока нет</h2>
+            <p>Создайте свою первую доску!</p>
+            {% if user.is_authenticated %}
+                <a href="{% url 'board_create' %}" class="btn btn-primary">Создать доску</a>
+            {% endif %}
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

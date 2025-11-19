@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ board.name }} - Pinterest Clone{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="board-header">
+        <h1>{{ board.name }}</h1>
+        {% if board.description %}
+            <p class="board-description">{{ board.description }}</p>
+        {% endif %}
+        <div class="board-meta">
+            <span>{{ board.pin_count }} пинов</span>
+            <span>•</span>
+            <a href="{% url 'profile' board.user.username %}">{{ board.user.username }}</a>
+            {% if board.is_private %}
+                <span class="badge">Приватная</span>
+            {% endif %}
+        </div>
+
+        {% if user == board.user %}
+            <div class="board-actions">
+                <a href="{% url 'board_edit' board.slug %}" class="btn btn-secondary">Редактировать</a>
+                <a href="{% url 'board_delete' board.slug %}" class="btn btn-danger">Удалить</a>
+            </div>
+        {% endif %}
+    </div>
+
+    {% if pins %}
+        <div class="masonry-grid">
+            {% for pin in pins %}
+                <div class="pin-card">
+                    <a href="{% url 'pin_detail' pin.pk %}" class="pin-image-link">
+                        <img src="{{ pin.image.url }}" alt="{{ pin.title }}" class="pin-image" loading="lazy">
+                    </a>
+                    <div class="pin-info">
+                        <h3 class="pin-title">
+                            <a href="{% url 'pin_detail' pin.pk %}">{{ pin.title }}</a>
+                        </h3>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="empty-state">
+            <h2>В этой доске пока нет пинов</h2>
+            {% if user == board.user %}
+                <a href="{% url 'pin_create' %}" class="btn btn-primary">Добавить пин</a>
+            {% endif %}
+        </div>
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    initMasonryGrid();
+});
+</script>
+{% endblock %}
